@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全屋定制选购 · 一站式工具（中远两湾城）</title>
+<style>
+  :root{--blue:#0f4c81;--blue2:#1a6fb5;--bg:#eef3f8;--card:#ffffff;--ok:#0a7a3d;--okbg:#e6f5ec;--warn:#c47b13;--warnbg:#fdf1e2;--line:#dce6f0;--txt:#1c2a3a;--mut:#6b7a8c;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;}
+  .wrap{max-width:1120px;margin:0 auto;padding:18px 18px 60px;}
+  header.top{background:linear-gradient(135deg,#0f4b81,#1a6fb5);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px;box-shadow:0 4px 14px rgba(15,75,129,.18);}
+  header.top h1{font-size:21px;letter-spacing:.5px;}
+  header.top p{font-size:13px;opacity:.9;margin-top:6px;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .tab-btn{border:none;border-radius:10px;padding:10px 15px;font-size:13.5px;font-weight:700;cursor:pointer;background:#dfe8f2;color:var(--blue);}
+  .tab-btn.active{background:var(--blue);color:#fff;}
+  .tab-pane{display:none;}
+  .tab-pane.active{display:block;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(15,75,129,.05);}
+  .card h2{font-size:17px;color:var(--blue);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .card .sub{font-size:12.5px;color:var(--mut);margin-bottom:12px;}
+  .badge{font-size:11px;background:var(--blue);color:#fff;border-radius:20px;padding:2px 10px;font-weight:normal;}
+  .badge.green{background:var(--ok);}
+  .warn-note{background:var(--warnbg);border-left:4px solid var(--warn);border-radius:6px;padding:10px 14px;font-size:12.5px;color:#7a5410;margin-top:12px;}
+  .ok-note{background:var(--okbg);border-left:4px solid var(--ok);border-radius:6px;padding:10px 14px;font-size:12.5px;color:#346b47;margin-top:12px;}
+  footer{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px;}
+  .btn{border:none;border-radius:8px;padding:10px 15px;font-size:13.5px;cursor:pointer;font-weight:600;}
+  .btn.primary{background:var(--blue);color:#fff;}
+  .btn.ghost{background:#eef3f8;color:var(--blue);border:1px solid var(--line);}
+  .btn.green{background:var(--ok);color:#fff;}
+  .btn:hover{filter:brightness(.96);}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
+  .tbsum{font-size:13px;color:var(--mut);align-self:center;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f0f6fc;color:var(--blue);font-weight:600;}
+  tr:nth-child(even) td{background:#fafcff;}
+  .cell-input{width:100%;border:1px solid transparent;background:transparent;font-size:13px;padding:3px;font-family:inherit;}
+  .cell-input:focus{border-color:var(--blue2);background:#fff;border-radius:4px;outline:none;}
+  .chk-line{display:flex;align-items:flex-start;gap:11px;padding:10px 4px;border-bottom:1px dashed var(--line);cursor:pointer;}
+  .chk-line:last-child{border-bottom:none;}
+  .chk-line input{width:18px;height:18px;margin-top:2px;accent-color:var(--blue);flex-shrink:0;}
+  .chk-line .k{font-size:14px;font-weight:600;}
+  .chk-line .d{font-size:12.5px;color:var(--mut);margin-top:2px;}
+  .chk-line.done .k{color:var(--mut);text-decoration:line-through;}
+  .chk-line.done{background:var(--okbg);}
+  .confirm-banner{background:var(--okbg);border:1px solid #b9e3c9;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:none;}
+  .confirm-banner .t{font-weight:700;color:var(--ok);font-size:14px;}
+  .confirm-banner .d{font-size:12.5px;color:#346b47;margin-top:3px;}
+  .grp{font-size:13px;font-weight:700;color:var(--blue2);border-bottom:1px solid var(--line);padding:11px 0 7px;margin-top:6px;}
+  .grp:first-child{margin-top:0;}
+  .item{display:flex;align-items:flex-start;gap:11px;padding:9px 4px;border-bottom:1px dashed var(--line);cursor:pointer;}
+  .item:last-child{border-bottom:none;}
+  .item input{width:18px;height:18px;margin-top:2px;accent-color:var(--blue);flex-shrink:0;}
+  .item .k{font-size:14px;font-weight:600;}
+  .item .d{font-size:12.5px;color:var(--mut);margin-top:2px;}
+  .item.done .k{color:var(--mut);text-decoration:line-through;}
+  .item.done{background:var(--okbg);}
+  .del-btn{background:none;border:none;color:#c0392b;cursor:pointer;font-size:15px;}
+  .minitable{font-size:12.5px;}
+  .minitable th,.minitable td{padding:7px 9px;}
+  .scroll{overflow-x:auto;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="topbar">
+      <div>
+        <h1>全屋定制选购 · 一站式工具</h1>
+        <p>中远两湾城 · 包豪斯风格 · 数据仅存本地 · 可整体导出 Excel 对账</p>
+      </div>
+      <button class="btn" style="background:#fff;color:var(--blue);" onclick="exportAll()">导出全部(Excel)</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="t1" onclick="switchTab('t1')">① 板材/主材</button>
+    <button class="tab-btn" data-tab="t2" onclick="switchTab('t2')">② 全屋柜体清单</button>
+    <button class="tab-btn" data-tab="t3" onclick="switchTab('t3')">③ 计价与避坑</button>
+    <button class="tab-btn" data-tab="t4" onclick="switchTab('t4')">④ 商家比价</button>
+    <button class="tab-btn" data-tab="t5" onclick="switchTab('t5')">⑤ 合同条款确认</button>
+  </div>
+
+  <!-- ① 板材/主材 -->
+  <div id="t1" class="tab-pane active">
+    <div class="card">
+      <h2>板材类型怎么选 <span class="badge">柜体/柜门可混用</span></h2>
+      <p class="sub">柜体和柜门板材可不一样，按场景配，别一柜到底。</p>
+      <table class="minitable">
+        <thead><tr><th style="width:120px;">板材</th><th>优点</th><th>注意点</th><th style="width:120px;">适合</th></tr></thead>
+        <tbody>
+          <tr><td>颗粒板(刨花板)</td><td>稳定、性价比高、90% 定制衣柜用</td><td>握钉一般、难做复杂雕花</td><td>预算党首选，柜体</td></tr>
+          <tr><td>多层板(胶合板)</td><td>耐潮、握钉好、结构强</td><td>价格较高、过薄易变形</td><td>厨房、近水柜体</td></tr>
+          <tr><td>生态板(免漆/细木工)</td><td>木质感、环保可控</td><td>价高、易变形</td><td>现场打柜、柜体</td></tr>
+          <tr><td>欧松板(OSB)</td><td>承重好、防潮、可 ENF</td><td>价格偏高</td><td>柜体/隔板承重</td></tr>
+          <tr><td>密度板(MDF)</td><td>易造型、平整</td><td>防潮一般</td><td>柜门/造型门</td></tr>
+          <tr><td>实木板</td><td>质感最好、环保可选高等级</td><td>贵、易开裂、选材讲究</td><td>预算足、柜门</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>环保等级（GB/T 39600-2021）<span class="badge green">甲醛释放量</span></h2>
+      <p class="sub">数值越小越环保。E1 只是底线不是"高配"；家里有孩子建议 E ≥ 起步，够上 ENF。</p>
+      <table class="minitable">
+        <thead><tr><th style="width:80px;">等级</th><th>限值(mg/m³)</th><th>性质</th><th>建议</th></tr></thead>
+        <tbody>
+          <tr><td>E1</td><td>≤0.124</td><td>强制安全底线</td><td>至少满足</td></tr>
+          <tr><td>E0</td><td>≤0.050</td><td>推荐，比 E1 严约 2.5 倍</td><td>家装起步推荐</td></tr>
+          <tr><td>ENF</td><td>≤0.025</td><td>国标最高，比 E1 严约 5 倍</td><td>有小孩/预算够上</td></tr>
+        </tbody>
+      </table>
+      <div class="ok-note">💡 别被"零甲醛"骗：木材本身含微量甲醛，ENF 是"极低"不是"零"。核心看<b>用的什么胶</b>。</div>
+    </div>
+    <div class="card">
+      <h2>五金、封边、台面 <span class="badge">问品牌，写进合同</span></h2>
+      <table class="minitable">
+        <thead><tr><th style="width:110px;">配件</th><th>首选品牌</th><th>关键判断</th></tr></thead>
+        <tbody>
+          <tr><td>铰链/合页</td><td>百隆 Blum · 海蒂诗 Hettich · 东泰 DTC</td><td>阻尼缓冲，杂牌易松</td></tr>
+          <tr><td>滑轨/抽屉</td><td>百隆 · 海蒂诗 · 悍高</td><td>三节轨带阻尼，静音顺滑</td></tr>
+          <tr><td>拉篮/收纳</td><td>百隆 · 悍高 · 意德凯</td><td>防滑防锈</td></tr>
+          <tr><td>气撑/上翻</td><td>进口/大牌</td><td>承重、缓冲</td></tr>
+          <tr><td>封边</td><td>激光封边 &gt; PUR &gt; EVA</td><td>激光最平整，问清楚用哪种</td></tr>
+          <tr><td>台面</td><td>岩板 / 石英石 / 人造石</td><td>厨房岩板耐高温，浴室防潮</td></tr>
+        </tbody>
+      </table>
+      <div class="warn-note">⚠️ 务必写进合同：板材品牌 + 环保等级 + 封边工艺 + 五金品牌 + 台面材质厚度。</div>
+    </div>
+  </div>
+
+  <!-- ② 全屋柜体清单 -->
+  <div id="t2" class="tab-pane">
+    <div class="card">
+      <h2>全屋柜体清单 <span class="badge">预置92㎡常用，可增删改</span></h2>
+      <p class="sub">逐项填尺寸/面积/预算，合计预算实时显示，方便跟商家对账。</p>
+      <div class="toolbar">
+        <button class="btn primary" onclick="cabAdd()">+ 添加柜体</button>
+        <button class="btn ghost" onclick="cabReset()">重置默认清单</button>
+        <span class="tbsum" id="cabSum"></span>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:34px;">#</th><th style="width:90px;">空间</th><th style="width:130px;">柜体类型</th><th style="width:110px;">板材</th><th style="width:84px;">计价</th><th style="width:100px;">尺寸(宽×高)</th><th style="width:90px;">面积/数量</th><th style="width:110px;">预估预算(元)</th><th style="width:140px;">备注</th><th style="width:36px;"></th></tr></thead>
+          <tbody id="cabBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 计价与避坑 -->
+  <div id="t3" class="tab-pane">
+    <div class="card">
+      <h2>三种计价方式 <span class="badge">先统一口径再比价</span></h2>
+      <p class="sub">同一组柜，投影 800/㎡ 和展开 200/㎡ 总价可能一样——别被单价数字骗。</p>
+      <table class="minitable">
+        <thead><tr><th style="width:100px;">方式</th><th>怎么算</th><th>特点</th><th>适合</th></tr></thead>
+        <tbody>
+          <tr><td>投影面积</td><td>宽×高(正面面积)</td><td>简单直观，主流，多含基础柜/门/五金</td><td>衣柜、鞋柜、书柜</td></tr>
+          <tr><td>展开面积</td><td>所有板逐块摊开算</td><td>单价低、总价可能高、难预判</td><td>结构复杂需内部清单</td></tr>
+          <tr><td>延米</td><td>柜体/台面按延米计</td><td>橱柜常用，地柜吊柜台面分开算</td><td>厨房地柜、吊柜、台面</td></tr>
+        </tbody>
+      </table>
+      <div class="ok-note">💡 参考：木工展开约550/㎡；普通品牌投影499-1400/㎡；头部连锁899-2500/㎡。比价须<b>同规格同口径</b>。</div>
+    </div>
+    <div class="card">
+      <h2>签单前必问避坑清单 <span class="badge">全勾再交钱</span></h2>
+      <p class="sub">点击整行勾选，自动保存。全勾完再谈价/交定金。</p>
+      <div id="pitList"></div>
+      <div class="toolbar" style="margin-top:12px;">
+        <button class="btn ghost" onclick="pitReset()">重置</button>
+        <span class="tbsum" id="pitSum"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 商家比价 -->
+  <div id="t4" class="tab-pane">
+    <div class="card">
+      <h2>商家比价对账 <span class="badge">至少3家同规格比</span></h2>
+      <p class="sub">每个意向商家一行，逐项填。适合拿两家互相压价。</p>
+      <div class="toolbar">
+        <button class="btn primary" onclick="quoteAdd()">+ 添加商家</button>
+        <button class="btn ghost" onclick="quoteReset()">重置</button>
+        <span class="tbsum" id="quoteSum"></span>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th style="width:34px;">#</th><th style="width:120px;">商家</th><th style="width:120px;">板材(含等级)</th><th style="width:110px;">五金品牌</th><th style="width:80px;">封边</th><th style="width:90px;">计价</th><th style="width:90px;">单价</th><th style="width:110px;">总报价(元)</th><th style="width:80px;">增项</th><th style="width:130px;">备注</th><th style="width:36px;"></th></tr></thead>
+          <tbody id="quoteBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ 合同条款确认 -->
+  <div id="t5" class="tab-pane">
+    <div class="confirm-banner" id="cfBanner">
+      <div class="t">✓ 全屋定制合同必备条款已确认</div>
+      <div class="d" id="cfTime"></div>
+    </div>
+    <div class="card">
+      <h2>必备条款逐项确认 <span style="font-size:12px;font-weight:normal;color:var(--mut);">(点击整行勾选)</span></h2>
+      <div id="cfList"></div>
+      <div class="toolbar" style="margin-top:12px;">
+        <button class="btn primary" id="btnCf">确认合同必备条款</button>
+        <button class="btn ghost" onclick="cfReset()">重置</button>
+        <span class="tbsum" id="cfProg"></span>
+      </div>
+    </div>
+  </div>
+
+  <footer>数据仅存本地浏览器(localStorage)，各模块数据相互独立 · 修改后按 Ctrl+F5 强刷</footer>
+</div>
+
+<script>
+// ========== 通用 ==========
+function switchTab(id){
+  document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-tab")===id); });
+  document.querySelectorAll(".tab-pane").forEach(function(p){ p.classList.toggle("active", p.id===id); });
+}
+function esc(v){ v=(v==null?"":String(v)); return v.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function lsGet(k,d){ try{ var v=JSON.parse(localStorage.getItem(k)); return (v===null||v===undefined)?d:v; }catch(e){ return d; } }
+function lsSet(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+// ========== ② 柜体清单 ==========
+var CAB_KEY="home_cabinets_v1";
+var CAB_FIELDS=["space","name","material","ptype","size","area","budget","note"];
+var CAB_DEFAULT=[
+ {space:"玄关",name:"鞋柜+换鞋凳",material:"颗粒板",ptype:"定制",size:"1.2m×2.4m",area:"2.9㎡",budget:"",note:""},
+ {space:"客餐厅",name:"餐边柜",material:"颗粒板 E0",ptype:"投影",size:"1.8m×2.4m",area:"4.3㎡",budget:"",note:""},
+ {space:"客厅",name:"电视柜/背景柜",material:"颗粒板",ptype:"投影",size:"3m×2.4m",area:"7.2㎡",budget:"",note:""},
+ {space:"厨房",name:"地柜+吊柜+台面",material:"多层板 E0",ptype:"延米",size:"5米地",area:"5延米",budget:"",note:""},
+ {space:"主卧",name:"衣柜(2m)",material:"颗粒板 ENF",ptype:"投影",size:"2m×2.4m",area:"4.8㎡",budget:"",note:""},
+ {space:"主卧",name:"床头柜×2",material:"颗粒板 ENF",ptype:"定制",size:"0.5m×0.4m",area:"2个",budget:"",note:""},
+ {space:"次卧",name:"衣柜(1.8m)",material:"颗粒板 ENF",ptype:"投影",size:"1.8m×2.4m",area:"4.3㎡",budget:"",note:""},
+ {space:"次卧",name:"书桌+书柜",material:"颗粒板 E0",ptype:"定制",size:"1.2m",area:"1套",budget:"",note:""},
+ {space:"卫浴",name:"浴室柜",material:"多层板 E0",ptype:"定制",size:"0.6m×0.5m",area:"1套",budget:"",note:""},
+ {space:"阳台",name:"洗衣柜+吊柜",material:"多层板 E0",ptype:"定制",size:"1.2m×2.4m",area:"2.9㎡",budget:"",note:""}
+];
+function cabLoad(){ return lsGet(CAB_KEY,CAB_DEFAULT); }
+function cabSave(a){ lsSet(CAB_KEY,a); renderCabs(); }
+function cabAdd(){ var a=cabLoad(); a.push({name:"",space:"",material:"",ptype:"",size:"",area:"",budget:"",note:""}); cabSave(a); }
+function cabDel(i){ if(!confirm("删除这一行柜体？"))return; var a=cabLoad(); a.splice(i,1); cabSave(a); }
+function cabReset(){ if(!confirm("重置为默认柜体清单(会清空你填的内容)？"))return; localStorage.removeItem(CAB_KEY); renderCabs(); }
+function renderCabs(){
+  var a=cabLoad(); var body=document.getElementById("cabBody"); body.innerHTML=""; var total=0;
+  a.forEach(function(r,i){
+    total += (parseFloat(r.budget)||0);
+    var tds='<td>'+(i+1)+'</td>';
+    CAB_FIELDS.forEach(function(f){ tds+='<td><input class="cell-input" data-q="'+i+'" data-f="'+f+'" value="'+esc(r[f]||"")+'"></td>'; });
+    tds+='<td><button class="del-btn" onclick="cabDel('+i+')">✕</button></td>';
+    body.insertAdjacentHTML("beforeend","<tr>"+tds+"</tr>");
+  });
+  body.querySelectorAll("input").forEach(function(inp){
+    inp.addEventListener("change", function(){
+      var i=parseInt(inp.getAttribute("data-q"),10), f=inp.getAttribute("data-f");
+      var x=cabLoad(); if(x[i]){ x[i][f]=inp.value; lsSet(CAB_KEY,x); renderCabs(); }
+    });
+  });
+  document.getElementById("cabSum").textContent="共 "+a.length+" 项 · 预算合计 "+(total?total.toFixed(0)+" 元":"待定");
+}
+
+// ========== ③ 避坑清单 ==========
+var PIT_KEY="home_pits_v1";
+var PITS=[
+ {t:"计价口径写清",d:"投影/展开/延米，单价与规格一致，避免误导"},
+ {t:"套餐包含内容列明",d:"基础柜体/门/五金、抽屉数量、背板厚度、常规深度，超出如何计费"},
+ {t:"增项都确认",d:"五金、抽屉、拉手、玻璃、见光板、顶封板、超深、造型是否另计，写书面"},
+ {t:"环保等级与检测报告",d:"ENF/E0 写进合同，要检测报告/合格证"},
+ {t:"板材品牌+封边工艺",d:"颗粒板/多层板、激光/PUR/EVA 封边写清"},
+ {t:"五金品牌型号",d:"铰链/滑轨/拉篮品牌型号写明"},
+ {t:"台面材质厚度",d:"厨房岩板/石英、浴室防潮，厚度写明"},
+ {t:"质保年限分项",d:"安装/柜体/五金/台面各自的质保年限与范围"},
+ {t:"安装与验收",d:"量尺、安装、封顶、验收标准由谁负责"},
+ {t:"付款与尾款",d:"定金/进度款/尾款，尾款留足作质保"},
+ {t:"售后与响应",d:"维修响应时限、免费范围、漏水/变形处理"},
+ {t:"附件效力",d:"报价单、图纸、规格书作为合同附件，效力等同正文"}
+];
+function pitLoad(){return lsGet(PIT_KEY,{});}
+function pitSave(s){ lsSet(PIT_KEY,s); renderPits(); }
+function renderPits(){
+  var s=pitLoad(); var host=document.getElementById("pitList"); host.innerHTML=""; var done=0;
+  PITS.forEach(function(p,i){
+    var on=!!s[i]; if(on)done++;
+    var row=document.createElement("div");
+    row.className="chk-line"+(on?" done":"");
+    row.innerHTML='<input type="checkbox" '+(on?"checked":"")+'><div><div class="k">'+p.t+'</div><div class="d">'+p.d+'</div></div>';
+    row.addEventListener("click",function(){ var t=pitLoad(); t[i]=!t[i]; pitSave(t); });
+    host.appendChild(row);
+  });
+  document.getElementById("pitSum").textContent="已核对 "+done+" / "+PITS.length;
+}
+function pitReset(){ if(!confirm("重置避坑清单？"))return; localStorage.removeItem(PIT_KEY); renderPits(); }
+
+// ========== ④ 商家比价 ==========
+var QUOTE_KEY="home_quotes_v1";
+var QUOTE_FIELDS=["brand","board","hw","edge","ptype","unit","price","extra","note"];
+function quoteLoad(){return lsGet(QUOTE_KEY,[]);}
+function quoteSave(a){ lsSet(QUOTE_KEY,a); renderQuotes(); }
+function quoteAdd(){ var a=quoteLoad(); a.push({brand:"",board:"",hw:"",edge:"",ptype:"",unit:"",price:"",extra:"",note:""}); quoteSave(a); }
+function quoteDel(i){ if(!confirm("删除这一行商家？"))return; var a=quoteLoad(); a.splice(i,1); quoteSave(a); }
+function quoteReset(){ if(!confirm("清空比价表？"))return; localStorage.removeItem(QUOTE_KEY); renderQuotes(); }
+function renderQuotes(){
+  var a=quoteLoad(); var body=document.getElementById("quoteBody"); body.innerHTML="";
+  a.forEach(function(r,i){
+    var tds='<td>'+(i+1)+'</td>';
+    QUOTE_FIELDS.forEach(function(f){ tds+='<td><input class="cell-input" data-q="'+i+'" data-f="'+f+'" value="'+esc(r[f]||"")+'"></td>'; });
+    tds+='<td><button class="del-btn" onclick="quoteDel('+i+')">✕</button></td>';
+    body.insertAdjacentHTML("beforeend","<tr>"+tds+"</tr>");
+  });
+  body.querySelectorAll("input").forEach(function(inp){
+    inp.addEventListener("change", function(){
+      var i=parseInt(inp.getAttribute("data-q"),10), f=inp.getAttribute("data-f");
+      var x=quoteLoad(); if(x[i]){ x[i][f]=inp.value; quoteSave(x); }
+    });
+  });
+  document.getElementById("quoteSum").textContent="已记录 "+a.length+" 家";
+}
+
+// ========== ⑤ 合同条款确认 ==========
+var CK="home_contract_v1"; var CF2="home_contract_confirm_v1";
+var GROUPS=[
+ {g:"一、规格与材料",items:[
+   {t:"板材品牌+环保等级",d:"颗粒板/多层板/欧松板，ENF/E0 写清，附检测报告"},
+   {t:"封边/五金/台面型号",d:"封边工艺、五金品牌型号、台面材质厚度列明"},
+   {t:"柜体尺寸与数量",d:"各空间柜体清单、尺寸、数量一一对应，计价口径写清"}
+ ]},
+ {g:"二、价格与结算",items:[
+   {t:"计价方式明确",d:"投影/展开/延米，单价总价，避免口头低价后增价"},
+   {t:"总价含全部费用",d:"含板材、五金、台面、安装、运输、上楼，一口价口径"},
+   {t:"增项书面确认",d:"任何增项/变更须书面(报价单)确认后才施工"},
+   {t:"付款与尾款",d:"定金/进度款/尾款，写明验收合格后付尾款，尾款留足作质保"}
+ ]},
+ {g:"三、质量与验收",items:[
+   {t:"验收标准",d:"安装后验收：开启、密封、封边、平整、五金、台面；不合格处理写入"},
+   {t:"质保年限分项",d:"柜体/五金/台面/封边各自的质保年限与范围"},
+   {t:"售后响应",d:"质保期内维修时限、免费范围、漏水/变形处理"}
+ ]},
+ {g:"四、安装与工期",items:[
+   {t:"安装工艺与责任",d:"量尺、安装、封顶、五金调试；施工安全与第三方责任"},
+   {t:"工期与延期",d:"开工/完工日期、延期违约金"}
+ ]},
+ {g:"五、法律完备",items:[
+   {t:"主体与签章",d:"盖章主体与营业执照一致、授权代表、签订日期"},
+   {t:"附件效力",d:"报价单、图纸、配置规格书作为附件，效力等同正文"}
+ ]}
+];
+function ckLoad(){return lsGet(CK,{});}
+function ckSave(s){ lsSet(CK,s); renderCf(); }
+function cfLoad(){return lsGet(CF2,{});}
+function cfKey(g,i){return g+"_"+i;}
+function renderCf(){
+  var s=ckLoad(); var host=document.getElementById("cfList"); host.innerHTML=""; var total=0,done=0;
+  GROUPS.forEach(function(G,gi){
+    var h=document.createElement("div"); h.className="grp"; h.textContent=G.g; host.appendChild(h);
+    G.items.forEach(function(it,ii){
+      total++; var on=!!s[cfKey(gi,ii)]; if(on)done++;
+      var row=document.createElement("div");
+      row.className="item"+(on?" done":"");
+      row.innerHTML='<input type="checkbox" '+(on?"checked":"")+'><div><div class="k">'+it.t+'</div><div class="d">'+it.d+'</div></div>';
+      row.addEventListener("click",function(){ var t=ckLoad(); t[cfKey(gi,ii)]=!t[cfKey(gi,ii)]; ckSave(t); });
+      host.appendChild(row);
+    });
+  });
+  document.getElementById("cfProg").textContent="已确认 "+done+" / "+total+" 项";
+  var cf=cfLoad(), banner=document.getElementById("cfBanner");
+  if(cf&&cf.confirmed){ banner.style.display="block"; document.getElementById("cfTime").textContent="确认时间："+cf.time;
+    var b=document.getElementById("btnCf"); b.textContent="重新确认"; b.className="btn green";
+  } else { banner.style.display="none"; }
+}
+function doCf(){
+  var s=ckLoad(), missing=[];
+  GROUPS.forEach(function(G,gi){ G.items.forEach(function(it,ii){ if(!s[cfKey(gi,ii)]) missing.push(G.g+" → "+it.t); }); });
+  if(missing.length){ alert("还有 "+missing.length+" 项未确认：\n"+missing.slice(0,6).join("\n")+(missing.length>6?"\n…等":"")); return; }
+  var now=new Date(); var time=now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-"+("0"+now.getDate()).slice(-2)+" "+("0"+now.getHours()).slice(-2)+":"+("0"+now.getMinutes()).slice(-2);
+  localStorage.setItem(CF2, JSON.stringify({confirmed:true,time:time}));
+  renderCf(); alert("已确认全屋定制合同必备条款，确认时间已记录。");
+}
+function cfReset(){ if(!confirm("重置全部勾选和确认记录？"))return; localStorage.removeItem(CK); localStorage.removeItem(CF2); renderCf(); }
+
+// ========== 导出全部(多Sheet) ==========
+function cellC(v){ return "<Cell><Data ss:Type=\"String\">"+esc(v)+"</Data></Cell>"; }
+function rowC(cs){ return "<Row>"+cs.map(cellC).join("")+"</Row>"; }
+function sheetC(name,head,rows){ return '<Worksheet ss:Name="'+esc(name)+'"><Table>'+rowC(head)+rows.map(rowC).join("")+'</Table></Worksheet>'; }
+function exportAll(){
+  var d=new Date(); var ts=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+  var sheets="";
+  // 柜体
+  var cab=cabLoad();
+  sheets+=sheetC("全屋柜体清单",["#","空间","柜体","板材","计价","尺寸","面积/数量","预算","备注"],
+    cab.map(function(r,i){ return [i+1,r.space,r.name,r.material,r.ptype,r.size,r.area,r.budget,r.note]; }));
+  // 避坑
+  var p=pitLoad(); var pitRows=PITS.map(function(x,i){ return [x.t, x.d, p[i]?"已核对":"未核对"]; });
+  sheets+=sheetC("计价避坑",["项目","说明","状态"],pitRows);
+  // 报价
+  var q=quoteLoad();
+  sheets+=sheetC("商家比价",["#","商家","板材","五金","封边","计价","单价","总价","增项","备注"],
+    q.map(function(r,i){ return [i+1,r.brand,r.board,r.hw,r.edge,r.ptype,r.total,r.price,r.extra,r.note]; }));
+  // 合同
+  var ck=ckLoad(); var cfRows=[];
+  GROUPS.forEach(function(G,gi){ G.items.forEach(function(it,ii){ cfRows.push([G.g,it.t,it.d,ck[cfKey(gi,ii)]?"已确认":"未确认"]); }); });
+  var cf=cfLoad(); if(cf&&cf.confirmed){ cfRows.push(["","","",""]); cfRows.push(["确认时间",cf.time,"",""]); }
+  sheets+=sheetC("合同条款",["分组","条款","说明","状态"],cfRows);
+
+  var xml='<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>'+
+    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
+    sheets+'</Workbook>';
+  var blob=new Blob([xml],{type:"application/vnd.ms-excel"});
+  var url=URL.createObjectURL(blob); var a=document.createElement("a");
+  a.href=url; a.download="全屋定制选购_" + ts + ".xls";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+// ========== 初始化 ==========
+document.getElementById("btnCf").addEventListener("click", doCf);
+renderCabs(); renderPits(); renderQuotes(); renderCf();
+</script>
+</body>
+</html>
