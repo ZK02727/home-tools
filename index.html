@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装修选购工具箱</title>
+<style>
+  :root{--blue:#0f4c81;--blue2:#1a6fb5;--bg:#eef3f8;--card:#fff;--ok:#0a7a3d;--okbg:#e6f5ec;--line:#dce6f0;--txt:#1c2a3a;--mut:#6b7a8c;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;}
+  .wrap{max-width:720px;margin:0 auto;padding:24px 18px 60px;}
+  header{background:linear-gradient(135deg,#0f4b81,#1a6fb5);color:#fff;border-radius:14px;padding:26px 28px;margin-bottom:20px;box-shadow:0 4px 14px rgba(15,75,129,.18);}
+  header h1{font-size:22px;letter-spacing:.5px;}
+  header p{font-size:13px;opacity:.9;margin-top:6px;}
+  a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:16px;text-decoration:none;box-shadow:0 2px 8px rgba(15,75,129,.06);transition:transform .15s,box-shadow .15s;}
+  a.card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(15,75,129,.14);}
+  .card .t{font-size:18px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:10px;}
+  .card .d{font-size:13.5px;color:var(--mut);margin-top:8px;}
+  .card .go{margin-top:12px;font-size:13px;color:var(--blue2);font-weight:600;}
+  .tip{background:var(--okbg);border-left:4px solid var(--ok);border-radius:6px;padding:10px 14px;font-size:12.5px;color:#346b47;margin-top:6px;}
+  footer{font-size:11.5px;color:var(--mut);text-align:center;margin-top:24px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🏠 装修选购工具箱</h1>
+    <p>系统窗 + 全屋定制 · 逐项勾选核对 · 商家比价对账 · 数据存本机浏览器</p>
+  </header>
+
+  <a class="card" href="window.html">
+    <div class="t">🪟 系统窗选购与合同</div>
+    <div class="d">进门报参数速查 · 8项硬指标核对 · 12项配件品牌对照 · 商家比价 · 合同必备条款确认（6组17项）</div>
+    <div class="go">打开工具 →</div>
+  </a>
+
+  <a class="card" href="furniture.html">
+    <div class="t">🛋️ 全屋定制选购</div>
+    <div class="d">板材/环保等级(GB/T 39600-2021) · 全屋柜体清单与预算合计 · 计价方式与避坑 · 商家比价 · 合同条款确认</div>
+    <div class="go">打开工具 →</div>
+  </a>
+
+  <div class="tip">💡 每个工具的勾选、报价数据都保存在你当前设备的浏览器里（不联网、不上传），换设备前记得导出 Excel 备份。</div>
+
+  <footer>https://zk02727.github.io/home-tools/</footer>
+</div>
+</body>
+</html>
