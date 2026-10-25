@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统窗选购与合同 · 一站式工具</title>
+<style>
+  :root{
+    --blue:#0f4c81; --blue2:#1a6fb5; --bg:#eef3f8; --card:#ffffff;
+    --ok:#0a7a3d; --okbg:#e6f5ec; --warn:#c47b13; --warnbg:#fdf1e2;
+    --line:#dce6f0; --txt:#1c2a3a; --mut:#6b7a8c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Microsoft YaHei",-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--txt); line-height:1.6;}
+  .wrap{max-width:1080px; margin:0 auto; padding:18px 18px 60px;}
+  header.top{background:linear-gradient(135deg,#0f4b81,#1a6fb5); color:#fff; border-radius:14px; padding:22px 26px; margin-bottom:16px; box-shadow:0 4px 14px rgba(15,75,129,.18);}
+  header.top h1{font-size:21px; letter-spacing:.5px;}
+  header.top p{font-size:13px; opacity:.9; margin-top:6px;}
+  /* 标签页 */
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .tab-btn{border:none; border-radius:10px; padding:10px 16px; font-size:14px; font-weight:700; cursor:pointer; background:#dfe8f2; color:var(--blue); transition:background .15s,color .15s;}
+  .tab-btn.active{background:var(--blue); color:#fff;}
+  .tab-pane{display:none;}
+  .tab-pane.active{display:block;}
+  /* 通用卡片 */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:18px; box-shadow:0 2px 8px rgba(15,75,129,.05);}
+  .card h2{font-size:17px; color:var(--blue); margin-bottom:4px; display:flex; align-items:center; gap:8px;}
+  .card .sub{font-size:12.5px; color:var(--mut); margin-bottom:14px;}
+  .badge{font-size:11px; background:var(--blue); color:#fff; border-radius:20px; padding:2px 10px; font-weight:normal;}
+  .badge.green{background:var(--ok);}
+  .warn-note{background:var(--warnbg); border-left:4px solid var(--warn); border-radius:6px; padding:10px 14px; font-size:12.5px; color:#7a5410; margin-top:14px;}
+  footer{font-size:11.5px; color:var(--mut); text-align:center; margin-top:8px;}
+  .btn{border:none; border-radius:8px; padding:9px 16px; font-size:13.5px; cursor:pointer; font-weight:600;}
+  .btn.primary{background:var(--blue); color:#fff;}
+  .btn.ghost{background:#eef3f8; color:var(--blue); border:1px solid var(--line);}
+  .btn.green{background:var(--ok); color:#fff;}
+  .btn:hover{filter:brightness(.96);}
+  /* 速查卡 */
+  .script-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .script-box{border:1px solid var(--line); border-left:4px solid var(--blue2); border-radius:8px; padding:12px 14px; background:#f8fbfe;}
+  .script-box .t{font-weight:700; font-size:14px; margin-bottom:6px; color:var(--blue);}
+  .script-box code{background:#eef4fb; padding:2px 6px; border-radius:4px; font-size:13px; color:var(--blue); white-space:pre-wrap;}
+  /* 硬指标核对 */
+  .chk-row{display:flex; align-items:flex-start; gap:12px; padding:11px 4px; border-bottom:1px dashed var(--line); cursor:pointer;}
+  .chk-row:last-child{border-bottom:none;}
+  .chk-row input{width:20px; height:20px; margin-top:2px; accent-color:var(--blue); flex-shrink:0;}
+  .chk-row .body{flex:1;}
+  .chk-row .k{font-size:14px; font-weight:600;}
+  .chk-row .d{font-size:12.5px; color:var(--mut); margin-top:2px;}
+  .chk-row.done .k{color:var(--mut); text-decoration:line-through;}
+  .chk-row.done .d{opacity:.6;}
+  .chk-row.done{background:var(--okbg);}
+  /* 配件表 */
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:#f0f6fc; color:var(--blue); font-weight:600;}
+  tr:nth-child(even) td{background:#fafcff;}
+  .tbl-chk{display:flex; align-items:center; gap:7px;}
+  .tbl-chk input{width:17px; height:17px; accent-color:var(--blue);}
+  /* 比价表 */
+  .quote-toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;}
+  .quote-wrap{overflow-x:auto;}
+  .quote-wrap table{min-width:1150px;}
+  .quote-wrap td input{width:100%; border:1px solid transparent; background:transparent; font-size:13px; padding:4px; font-family:inherit;}
+  .quote-wrap td input:focus{border-color:var(--blue2); background:#fff; border-radius:4px; outline:none;}
+  .del-btn{background:none; border:none; color:#c0392b; cursor:pointer; font-size:15px;}
+  .del-btn:hover{font-weight:700;}
+  /* 合同清单 */
+  .confirm-banner{background:var(--okbg); border:1px solid #b9e3c9; border-radius:10px; padding:12px 16px; margin-bottom:16px; display:none;}
+  .confirm-banner .t{font-weight:700; color:var(--ok); font-size:14px;}
+  .confirm-banner .d{font-size:12.5px; color:#346b47; margin-top:3px;}
+  .grp{font-size:13px; font-weight:700; color:var(--blue2); border-bottom:1px solid var(--line); padding:12px 0 8px; margin-top:6px;}
+  .grp:first-child{margin-top:0;}
+  .item{display:flex; align-items:flex-start; gap:11px; padding:10px 4px; border-bottom:1px dashed var(--line); cursor:pointer;}
+  .item:last-child{border-bottom:none;}
+  .item input{width:19px; height:19px; margin-top:2px; accent-color:var(--blue); flex-shrink:0;}
+  .item .body{flex:1;}
+  .item .k{font-size:14px; font-weight:600;}
+  .item .d{font-size:12.5px; color:var(--mut); margin-top:2px;}
+  .item.done .k{color:var(--mut); text-decoration:line-through;}
+  .item.done{background:var(--okbg);}
+  .ctrl{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  #prog{font-size:13px; color:var(--mut); align-self:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>系统窗选购与合同 · 一站式工具</h1>
+    <p>① 选购清单（隔音密封核对 + 商家比价） · ② 合同必备条款确认 —— 数据仅存本地，可分别导出 Excel。</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="tab1" onclick="switchTab('tab1')">① 选购清单（品牌/密封/比价）</button>
+    <button class="tab-btn" data-tab="tab2" onclick="switchTab('tab2')">② 合同必备条款确认</button>
+  </div>
+
+  <!-- ============ 标签1：选购清单 ============ -->
+  <div id="tab1" class="tab-pane active">
+    <div class="card">
+      <h2>第一步 · 进门直接报这句话 <span class="badge">速查</span></h2>
+      <p class="sub">照着念，商家一听就知道你是内行，直接进入正题。</p>
+      <div class="script-grid">
+        <div class="script-box">
+          <div class="t">报玻璃配置</div>
+          <code>"我要 <b>5+12A+夹胶+5</b>（或 5+15A+5 夹胶中空），<b>双钢化</b>，临街/高架面<b>夹胶层</b>，西晒面加 <b>Low-E</b>，中空腔<b>充氩气</b>。"</code>
+        </div>
+        <div class="script-box">
+          <div class="t">报整窗硬指标</div>
+          <code>"系统窗，<b>断桥铝 + 1.8mm 原生铝 + 多腔体 + 夹胶中空 + Low-E + 充氩</b>，<b>气密 ≥7 级</b>（最好 8），<b>隔声量 ≥40dB</b>，给我整窗检测报告。"</code>
+        </div>
+      </div>
+      <div class="warn-note">⚠️ 别只说"买玻璃"——实际成交是<b>整扇窗</b>。五金、隔热条、胶条、安装质保都要一起谈，白纸黑字写进合同。</div>
+    </div>
+
+    <div class="card">
+      <h2>第二步 · 逐项核对硬指标 <span class="badge">勾完即达标</span></h2>
+      <p class="sub">满足一项勾一项，全勾完这扇窗才算达标。点击整行即可勾选，自动保存本地。</p>
+      <div id="checkList"></div>
+      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn ghost" onclick="clearChecks()">重置核对</button>
+        <span id="chkSummary" style="font-size:13px; color:var(--mut); align-self:center;"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>第三步 · 配件品牌对照 <span class="badge">问材质，别只认牌子</span></h2>
+      <p class="sub">核对"商家答了什么"。核心：五金品牌 + 隔热条材质 + 胶条材质务必写进合同。</p>
+      <table>
+        <thead><tr><th style="width:110px;">配件</th><th style="width:200px;">首选品牌</th><th style="width:200px;">国产品牌/可替代</th><th>关键判断</th><th style="width:120px;">商家核对</th></tr></thead>
+        <tbody>
+          <tr><td>五金（传动）</td><td>诺托 Roto · 好博 Hoppe · 格屋 GU · 维达 Siegenia</td><td>国强 · 坚朗 · 立兴</td><td>德系首选；杂牌避坑，五金坏整窗废</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="五金"><span>已确认</span></td></tr>
+          <tr><td>隔热条</td><td>泰诺风 Technoform</td><td>优质 PA66 尼龙条</td><td>必选 PA66 尼龙，非 PVC</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="隔热条"><span>已确认</span></td></tr>
+          <tr><td>胶条/密封条</td><td>进口 EPDM</td><td>常熟金鼎 · 亚东等大厂 EPDM</td><td>材质 EPDM 三元乙丙 + 等压胶条工艺</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="胶条"><span>已确认</span></td></tr>
+          <tr><td>玻璃</td><td>信义 · 旗滨 · 台玻</td><td>南玻等大厂钢化玻璃</td><td>双钢化；中空+夹胶+Low-E 按朝向配</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="玻璃"><span>已确认</span></td></tr>
+          <tr><td>执手/把手</td><td>好博(静音执手)</td><td>国产配套件</td><td>选静音执手，锁闭更稳</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="执手"><span>已确认</span></td></tr>
+          <tr><td>锁闭系统</td><td>多点锁闭（德系套装）</td><td>国强 · 坚朗</td><td>锁点越多密封越严、越防撬</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="锁闭"><span>已确认</span></td></tr>
+          <tr><td>滑轴/铰链</td><td>随德系五金套装</td><td>国产大厂件</td><td>开合顺滑度</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="滑轴"><span>已确认</span></td></tr>
+          <tr><td>金刚纱网</td><td>不锈钢金刚网</td><td>国标金刚网</td><td>防蚊+防盗，选不锈钢</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="纱网"><span>已确认</span></td></tr>
+          <tr><td>排水/止水</td><td>隐藏式排水 + 止水胶</td><td>同左</td><td>防雨水倒灌（上海雨天必看）</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="排水"><span>已确认</span></td></tr>
+          <tr><td>玻璃密封胶</td><td>大厂中空密封胶</td><td>同左</td><td>边缘打胶密实，防中空进水结雾</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="密封胶"><span>已确认</span></td></tr>
+          <tr><td>安全绳/防坠</td><td>随系统窗配</td><td>同左</td><td>高层必配，防玻璃坠落</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="防坠"><span>已确认</span></td></tr>
+          <tr><td>惰性气体(氩气)</td><td>充氩气</td><td>同左</td><td>中空腔填充，提升隔热</td><td class="tbl-chk"><input type="checkbox" class="part" data-k="氩气"><span>已确认</span></td></tr>
+        </tbody>
+      </table>
+      <div class="warn-note">⚠️ <b>关键提醒</b>：系统窗配件是"配套"的，不是自己拼。让商家把<b>五金品牌 + 隔热条材质(PA66) + 胶条材质(EPDM)</b>写进合同，别让"五金可能是xx"这种含糊话过关。</div>
+    </div>
+
+    <div class="card">
+      <h2>第四步 · 商家比价对账 <span class="badge">逐项填，取最高性价比</span></h2>
+      <p class="sub">每个意向商家一行，逐项填报价与参数。填完可导出 Excel，方便拿两家互相压价。</p>
+      <div class="quote-toolbar">
+        <button class="btn primary" onclick="addRow()">+ 添加商家</button>
+        <button class="btn ghost" onclick="exportExcel()">导出 Excel 对账</button>
+        <button class="btn ghost" onclick="resetQuotes()">重置报价表</button>
+      </div>
+      <div class="quote-wrap">
+        <table class="quote-table">
+          <thead>
+            <tr>
+              <th style="width:30px;">序号</th>
+              <th style="width:120px;">商家名称</th>
+              <th style="width:110px;">整窗总报价</th>
+              <th style="width:110px;">玻璃配置</th>
+              <th style="width:80px;">隔声量dB</th>
+              <th style="width:70px;">气密级</th>
+              <th style="width:100px;">壁厚/材质</th>
+              <th style="width:110px;">五金品牌</th>
+              <th style="width:90px;">隔热条材质</th>
+              <th style="width:90px;">胶条材质</th>
+              <th style="width:100px;">安装/质保</th>
+              <th style="width:160px;">备注(坑点/亮点)</th>
+              <th style="width:40px;"></th>
+            </tr>
+          </thead>
+          <tbody id="quoteBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 标签2：合同条款确认 ============ -->
+  <div id="tab2" class="tab-pane">
+    <div class="confirm-banner" id="confirmBanner">
+      <div class="t" id="confirmTitle">✓ 本合同必备条款已确认</div>
+      <div class="d" id="confirmTime"></div>
+    </div>
+
+    <div class="card">
+      <h2>必备条款逐项核对 <span style="font-size:12px;font-weight:normal;color:var(--mut);">(点击整行勾选)</span></h2>
+      <div id="list"></div>
+      <div class="ctrl" style="margin-top:16px;">
+        <button class="btn primary" id="btnConfirm">确认本合同必备条款</button>
+        <button class="btn ghost" onclick="exportContractExcel()">导出 Excel</button>
+        <button class="btn ghost" onclick="resetChecks()">重置</button>
+        <span id="prog"></span>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--warnbg);border-color:#eccfa0;">
+      <h2 style="color:var(--warn);">⚠️ 签订前提醒</h2>
+      <p style="font-size:13px;color:#7a5410;">这份清单是「合同必须写清楚」的核对项，不是完整合同文本。核对时坚持<b>白纸黑字、可量化（dB/等级/壁厚/年限）、无口头承诺</b>；关键点：五金品牌、隔热条材质、玻璃配置、质保年限、付款节点、增项需书面确认。</p>
+    </div>
+  </div>
+
+  <footer>数据仅存本地浏览器(localStorage)，两套数据各自独立、互不干扰 · 修改后按 Ctrl+F5 强刷</footer>
+</div>
+
+<script>
+// ---------- 标签切换 ----------
+function switchTab(id){
+  document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-tab")===id); });
+  document.querySelectorAll(".tab-pane").forEach(function(p){ p.classList.toggle("active", p.id===id); });
+}
+
+// ================= ① 选购清单 =================
+var CHECK_KEY = "window_checklist_v1";
+var CHECKS = [
+  {k:"glass",  name:"玻璃：中空 + 夹胶（双钢化）", detail:"5+12A+夹胶+5 或 5+15A+5 夹胶中空；西晒面加 Low-E，充氩气"},
+  {k:"db",     name:"隔声量 ≥ 40dB", detail:"夹胶版隔声量要求 40dB 以上，临街/高架体感明显"},
+  {k:"air",    name:"气密 ≥ 7 级（最好 8）", detail:"GB/T 7106 分级，越大越严，直接影响漏音和保温"},
+  {k:"wall",   name:"型材壁厚 ≥ 1.6mm、原生铝、多腔体", detail:"高层/临街建议 1.8mm 原生铝多腔体"},
+  {k:"seal",   name:"三道以上密封 + 等压胶条", detail:"EPDM 材质、等压胶条工艺，密封到位"},
+  {k:"hardware",name:"五金德系（诺托/好博）", detail:"密封锁点好、开合顺滑，预算够选德系"},
+  {k:"install",name:"专业安装 + 质保条款",   detail:"量尺、安装、密封胶、五金调试现场盯，写进合同"},
+  {k:"report", name:"拿到整窗检测报告",      detail:"看隔声量/气密/水密/抗风压具体数值，不看广告词"}
+];
+function loadChecks(){ var s={}; try{ s=JSON.parse(localStorage.getItem(CHECK_KEY))||{}; }catch(e){} return s; }
+function saveChecks(s){ localStorage.setItem(CHECK_KEY, JSON.stringify(s)); }
+function renderChecks(){
+  var s = loadChecks();
+  var host = document.getElementById("checkList");
+  host.innerHTML = "";
+  var done = 0;
+  CHECKS.forEach(function(c, i){
+    var on = !!s[c.k];
+    if(on) done++;
+    var row = document.createElement("div");
+    row.className = "chk-row" + (on ? " done" : "");
+    row.innerHTML = '<input type="checkbox" ' + (on?"checked":"") + ' id="c_'+i+'">' +
+      '<div class="body"><div class="k">'+c.name+'</div><div class="d">'+c.detail+'</div></div>';
+    row.addEventListener("click", function(){ toggle(i); });
+    host.appendChild(row);
+  });
+  var sum = document.getElementById("chkSummary");
+  if(sum) sum.textContent = "已达标 " + done + " / " + CHECKS.length;
+}
+function toggle(i){
+  var s = loadChecks();
+  s[CHECKS[i].k] = !s[CHECKS[i].k];
+  saveChecks(s);
+  renderChecks();
+}
+function clearChecks(){
+  if(confirm("确定重置所有核对勾选吗？")){ localStorage.removeItem(CHECK_KEY); renderChecks(); }
+}
+
+var PART_KEY = "window_parts_v1";
+function loadParts(){ var s={}; try{ s=JSON.parse(localStorage.getItem(PART_KEY))||{}; }catch(e){} return s; }
+function saveParts(s){ localStorage.setItem(PART_KEY, JSON.stringify(s)); }
+function initParts(){
+  var s = loadParts();
+  document.querySelectorAll(".part").forEach(function(cb){
+    var k = cb.getAttribute("data-k");
+    if(k && s[k]) cb.checked = true;
+    cb.addEventListener("change", function(){ var t=loadParts(); t[k]=cb.checked; saveParts(t); });
+  });
+}
+
+var Q_KEY = "window_quotes_v1";
+var qFields = ["name","total","glass","db","air","wall","hw","insul","seal","install","note"];
+function loadQuotes(){ var a=[]; try{ a=JSON.parse(localStorage.getItem(Q_KEY))||[]; }catch(e){} return a; }
+function saveQuotes(a){ localStorage.setItem(Q_KEY, JSON.stringify(a)); }
+function addRow(){
+  var a = loadQuotes();
+  a.push({name:"", total:"", glass:"", db:"", air:"", wall:"", hw:"", insul:"", seal:"", install:"", note:""});
+  saveQuotes(a); renderQuotes();
+}
+function delRow(i){
+  if(!confirm("删除这一行商家报价？")) return;
+  var a = loadQuotes(); a.splice(i,1); saveQuotes(a); renderQuotes();
+}
+function renderQuotes(){
+  var a = loadQuotes();
+  var body = document.getElementById("quoteBody");
+  body.innerHTML = "";
+  a.forEach(function(r, idx){
+    var tr = document.createElement("tr");
+    var tds = '<td>'+(idx+1)+'</td>';
+    qFields.forEach(function(f){
+      var w = f==="note" ? 'style="min-width:160px"' : "";
+      tds += '<td '+w+'><input data-q="'+idx+'" data-f="'+f+'" value="'+esc(r[f]||"")+'"></td>';
+    });
+    tds += '<td><button class="del-btn" onclick="delRow('+idx+')">✕</button></td>';
+    tr.innerHTML = tds;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll("input").forEach(function(inp){
+    inp.addEventListener("change", function(){
+      var i = parseInt(inp.getAttribute("data-q"),10);
+      var f = inp.getAttribute("data-f");
+      var a = loadQuotes();
+      if(a[i]){ a[i][f] = inp.value; saveQuotes(a); }
+    });
+  });
+}
+function resetQuotes(){
+  if(confirm("确定清空整个报价表吗？")){ localStorage.removeItem(Q_KEY); renderQuotes(); }
+}
+
+// 选购导出
+function esc(v){ v=(v==null?"":String(v)); return v.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function cell(val){ return "<Cell><Data ss:Type=\"String\">"+esc(val)+"</Data></Cell>"; }
+function rowHtml(cells){ return "<Row>"+cells.map(cell).join("")+"</Row>"; }
+function sheetXml(name, header, rows){ return '<Worksheet ss:Name="'+esc(name)+'"><Table>'+rowHtml(header)+rows.map(rowHtml).join("")+'</Table></Worksheet>'; }
+
+function exportExcel(){
+  var d = new Date();
+  var ts = d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+  var s = loadChecks();
+  var chkRows = CHECKS.map(function(c){ return [c.name, c.detail, s[c.k]?"达标":"未勾"]; });
+  var parts = loadParts();
+  var partRows = [];
+  document.querySelectorAll(".part").forEach(function(cb){ partRows.push([cb.getAttribute("data-k"), parts[cb.getAttribute("data-k")]?"已确认":""]); });
+  var qHeader = ["序号","商家名称","整窗总报价","玻璃配置","隔声量dB","气密级","壁厚/材质","五金品牌","隔热条材质","胶条材质","安装/质保","备注"];
+  var quotes = loadQuotes();
+  var qRows = quotes.map(function(r,i){ return [i+1, r.name, r.total, r.glass, r.db, r.air, r.wall, r.hw, r.insul, r.seal, r.install, r.note]; });
+  var xml = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>' +
+    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+    sheetXml("硬指标核对", ["硬指标","说明","状态"], chkRows) +
+    sheetXml("配件核对", ["配件","状态"], partRows) +
+    sheetXml("商家报价", qHeader, qRows) +
+    '</Workbook>';
+  var blob = new Blob([xml], {type:"application/vnd.ms-excel"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = "系统窗选购对账_" + ts + ".xls";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ================= ② 合同条款确认 =================
+var CK = "contract_checklist_v1";
+var CF = "contract_confirm_v1";
+var GROUPS = [
+  { g: "一、合同结构与规格（写全写细）", items: [
+    { t: "门窗配置明细表", d: "品牌、型材型号、壁厚(≥1.8mm原生铝)、玻璃配置、五金品牌、隔热条材质(PA66)、胶条材质(EPDM)，逐项列清单作附件" },
+    { t: "尺寸与数量明确", d:"各窗洞口尺寸、开启方式(平开/推拉)、纱窗/数量一一对应，写明按实测洞口还是净面积计算" }
+  ]},
+  { g: "二、性能与验收标准（可量化）", items: [
+    { t: "性能指标写入合同", d:"隔声量≥40dB、气密≥7级、水密、抗风压等级，作为验收的硬性标准" },
+    { t: "附整窗检测报告", d:"厂家须交付整窗检测报告/合格证，数值与合同一致" },
+    { t: "验收方式与标准", d:"安装完成后现场验收：开启、锁闭、密封、渗漏、外观；不合格如何处理(返修/换件/赔偿)写入" }
+  ]},
+  { g:"三、价格与结算（防增项、防包死）", items: [
+    { t:"整窗总价含全部费用", d:"含主材、五金、玻璃、辅材、安装、运输、上楼、垃圾清运，写明一口价；避免后期加钱" },
+    { t:"面积/单价计算方式", d:"写清计价口径(洞口/净面积)、是否有最低起算、损耗由谁承担" },
+    { t:"付款节点与尾款", d:"定金比例、进度款、尾款节点，写明【验收合格后付尾款】；尾款留足(建议留10%以上作为质保金)" },
+    { t:"增项需书面确认", d:"任何增项/变更须书面(报价单)确认后方可施工，口头增项不算" }
+  ]},
+  { g:"四、安装与工期", items: [
+    { t:"安装工艺要求", d:"现场量尺、防水处理、打胶固定、五金调试、收口，写明由专业队伍安装" },
+    { t:"工期与延期责任", d:"写明开工/完工日期，延期每日违约金(比例)及责任" },
+    { t:"安全责任", d:"施工高空作业安全、第三人/财产损失责任由施工方承担；旧窗拆除处理方式" }
+  ]},
+  { g:"五、售后与违约", items: [
+    { t:"质保年限(分项)", d:"型材、五金、玻璃、密封、防水各自的质保年限与范围(易漏：防水密封)" },
+    { t:"售后响应与维修", d:"质保期内维修响应时限、免费维修范围、漏水/漏音问题如何处理" },
+    { t:"违约责任", d:"逾期违约金、质量不合格(退货/返工/赔偿)条款；损失计算方式" }
+  ]},
+  { g:"六、法律完备性", items: [
+    { t:"主体与签章", d:"盖章主体与营业执照一致、授权代表、签订日期、联系电话地址齐全" },
+    { t:"附件效力", d:"报价单、设计图纸、玻璃/型材规格书、配置明细表作为附件，效力等同正文" }
+  ]}
+];
+function loadCK(){ var s={}; try{ s=JSON.parse(localStorage.getItem(CK))||{}; }catch(e){} return s; }
+function saveCK(s){ localStorage.setItem(CK, JSON.stringify(s)); }
+function key(g,i){ return g+"_"+i; }
+function loadConfirm(){ var o={}; try{ o=JSON.parse(localStorage.getItem(CF))||{}; }catch(e){} return o; }
+
+function render(){
+  var s = loadCK();
+  var host = document.getElementById("list");
+  host.innerHTML = "";
+  var total = 0, done = 0;
+  GROUPS.forEach(function(G, gi){
+    var h = document.createElement("div"); h.className="grp"; h.textContent=G.g; host.appendChild(h);
+    G.items.forEach(function(it, ii){
+      total++;
+      var on = !!s[key(gi,ii)];
+      if(on) done++;
+      var row = document.createElement("div");
+      row.className = "item" + (on ? " done" : "");
+      row.innerHTML = '<input type="checkbox" '+(on?"checked":"")+' id="g'+gi+'_'+ii+'">'+
+        '<div class="body"><div class="k">'+it.t+'</div><div class="d">'+it.d+'</div></div>';
+      row.addEventListener("click", function(){ var t=loadCK(); t[key(gi,ii)]=!t[key(gi,ii)]; saveCK(t); render(); });
+      host.appendChild(row);
+    });
+  });
+  document.getElementById("prog").textContent = "已确认 " + done + " / " + total + " 项";
+  var conf = loadConfirm();
+  var banner = document.getElementById("confirmBanner");
+  if(conf && conf.confirmed){
+    banner.style.display = "block";
+    document.getElementById("confirmTime").textContent = "确认时间：" + conf.time;
+    var btn = document.getElementById("btnConfirm");
+    btn.textContent = "重新确认"; btn.className = "btn green";
+  } else {
+    banner.style.display = "none";
+  }
+}
+
+function doConfirm(){
+  var s = loadCK();
+  var missing = [];
+  GROUPS.forEach(function(G, gi){ G.items.forEach(function(it, ii){ if(!s[key(gi,ii)]) missing.push(G.g + " → " + it.t); }); });
+  if(missing.length > 0){
+    alert("还有 " + missing.length + " 项未确认：\n" + missing.slice(0,6).join("\n") + (missing.length>6?"\n…等":""));
+    return;
+  }
+  var now = new Date();
+  var time = now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-"+("0"+now.getDate()).slice(-2)+" "+
+             ("0"+now.getHours()).slice(-2)+":"+("0"+now.getMinutes()).slice(-2);
+  localStorage.setItem(CF, JSON.stringify({confirmed:true, time:time}));
+  render();
+  alert("已确认本合同必备条款，确认时间已记录。");
+}
+
+function resetChecks(){
+  if(!confirm("确定重置全部勾选和确认记录吗？")) return;
+  localStorage.removeItem(CK);
+  localStorage.removeItem(CF);
+  render();
+}
+
+// 合同导出
+function escV(v){ v=(v==null?"":String(v)); return v.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function cellV(val){ return "<Cell><Data ss:Type=\"String\">"+escV(val)+"</Data></Cell>"; }
+function rowV(cs){ return "<Row>"+cs.map(cellV).join("")+"</Row>"; }
+
+function exportContractExcel(){
+  var s = loadCK();
+  var rows = [];
+  GROUPS.forEach(function(G, gi){ G.items.forEach(function(it, ii){ rows.push([G.g, it.t, it.d, s[key(gi,ii)] ? "已确认" : "未确认"]); }); });
+  var conf = loadConfirm();
+  if(conf && conf.confirmed){ rows.push(["","","",""]); rows.push(["确认状态","已确认","",""]); rows.push(["确认时间",conf.time,"",""]); }
+  var xml = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>' +
+    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+    '<Worksheet ss:Name="合同条款"><Table>' +
+    rowV(["分组","必备条款","要点说明","确认状态"]) +
+    rows.map(rowV).join("") +
+    '</Table></Worksheet></Workbook>';
+  var blob = new Blob([xml], {type:"application/vnd.ms-excel"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  var d = new Date();
+  a.href = url;
+  a.download = "系统窗合同条款确认_" + d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2) + ".xls";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("btnConfirm").addEventListener("click", doConfirm);
+
+// ---------- 初始化 ----------
+renderChecks();
+initParts();
+renderQuotes();
+render();
+</script>
+</body>
+</html>
